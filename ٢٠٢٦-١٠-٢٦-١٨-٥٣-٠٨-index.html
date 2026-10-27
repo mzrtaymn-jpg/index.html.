@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07120c">
+<title>أبطال البيئة | العب لتغيّر العالم</title>
+<style>
+:root{--bg:#07120c;--panel:#101f16;--panel2:#152a1d;--green:#52f29a;--green2:#b6ffd2;--text:#f1fff6;--muted:#a6c4b1;--line:#2b5139;--red:#ff8e8e}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.shell{max-width:1050px;margin:auto;padding:18px}.hero{position:relative;overflow:hidden;text-align:center;padding:35px 18px 25px;border:1px solid var(--line);border-radius:26px;background:radial-gradient(ellipse at 50% 0,#1d6038 0, #10291a 48%,#0a170f 100%)}
+.hero:after{content:"";position:absolute;width:260px;height:260px;border:1px solid #52f29a24;border-radius:50%;top:-160px;right:-70px;box-shadow:0 0 0 25px #52f29a0a,0 0 0 55px #52f29a08;pointer-events:none}
+.planet{font-size:58px;filter:drop-shadow(0 8px 18px #52f29a25)}.eyebrow{color:var(--green);font-weight:800;letter-spacing:.04em;margin:0}
+h1{font-size:clamp(2.1rem,7vw,4.3rem);line-height:1.15;margin:7px 0;color:var(--green)}.hero p{color:var(--muted);margin:8px 0}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:20px}.stat{border:1px solid var(--line);background:#07120c88;border-radius:14px;padding:8px 15px}.stat b{color:var(--green)}
+.menu{display:flex;gap:8px;overflow-x:auto;padding:17px 0;scrollbar-width:thin}.tab{white-space:nowrap;border:1px solid var(--line);border-radius:13px;padding:10px 14px;background:var(--panel);color:var(--text)}.tab.active,.tab:hover{background:var(--green);color:#07120c;border-color:var(--green);font-weight:800}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 265px;gap:16px;align-items:start}.panel,.side-card{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:22px}.panel h2,.side-card h2{margin:0 0 8px;color:var(--green);font-size:1.45rem}.muted{color:var(--muted)}.progress{height:7px;background:#23372a;border-radius:20px;overflow:hidden;margin:13px 0 20px}.progress span{display:block;height:100%;background:var(--green);width:0;transition:width .25s}
+.question{font-size:1.2rem;font-weight:750;margin:16px 0}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer,.bin{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:13px;padding:12px;text-align:right;min-height:52px}.answer:hover,.bin:hover{border-color:var(--green);background:#1b3b28}.answer:disabled,.bin:disabled{opacity:.8;cursor:default}.answer.good{border-color:var(--green);background:#17472a}.answer.bad{border-color:var(--red);background:#482323}
+.feedback{min-height:35px;margin:14px 0 0;font-weight:700}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+.primary,.secondary{border:0;border-radius:12px;padding:12px 17px;font-weight:800}.primary{background:var(--green);color:#06130a}.primary:hover{background:var(--green2)}.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
+.side-card{margin-bottom:14px}.side-card p{margin:6px 0}.bigscore{font-size:2rem;font-weight:900;color:var(--green)}.mission label{display:flex;align-items:flex-start;gap:9px;padding:7px 0;color:var(--muted)}.mission input{accent-color:var(--green);margin-top:7px;width:18px;height:18px;flex-shrink:0}.mission label:has(input:checked){color:var(--green2)}.tip{background:#12291b;border:1px solid var(--line);padding:12px;border-radius:13px;color:var(--green2);font-size:.94rem}
+footer{text-align:center;color:var(--muted);padding:25px 5px 12px;font-size:.9rem}.hidden{display:none!important}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;gap:12px}.side-card{margin:0}.shell{padding:10px}.hero{padding:25px 12px}.panel{padding:17px}}
+@media(max-width:440px){.answers{grid-template-columns:1fr}.side{grid-template-columns:1fr}.menu{margin-inline:-2px}.stat{font-size:.9rem}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="hero">
+  <div class="planet" aria-hidden="true">🌍</div>
+  <p class="eyebrow">مغامرة صغيرة… أثر كبير</p>
+  <h1>أبطال البيئة</h1>
+  <p>العب، تعلّم، وخلي كوكبنا أخضر 🌱</p>
+  <div class="stats"><div class="stat">⭐ مجموع النقاط: <b id="score">0</b></div><div class="stat">🏆 المستوى: <b id="level">1</b></div><div class="stat">🎮 ألعاب مكتملة: <b id="completed">0</b></div></div>
+</header>
+<nav class="menu" aria-label="اختيار اللعبة">
+  <button class="tab active" data-game="quiz">🌱 تحدي المعلومات</button>
+  <button class="tab" data-game="sort">♻️ فرز النفايات</button>
+  <button class="tab" data-game="nature">🌳 صديق الطبيعة</button>
+  <button class="tab" data-game="save">💧 أنقذ الموارد</button>
+  <button class="tab" data-game="tf">⚡ صح أم خطأ</button>
+</nav>
+<div class="layout">
+<main>
+<section class="panel game" id="quiz">
+  <h2>🌱 تحدي المعلومات البيئية</h2><p class="muted" id="quiz-count"></p><div class="progress"><span id="quiz-progress"></span></div>
+  <div class="question" id="quiz-q"></div><div class="answers" id="quiz-a"></div><p class="feedback" id="quiz-f" aria-live="polite"></p><div class="actions"><button class="primary hidden" id="quiz-next">السؤال التالي ←</button><button class="secondary" id="quiz-restart">إعادة اللعبة ↻</button></div>
+</section>
+<section class="panel game hidden" id="sort">
+  <h2>♻️ فرز النفايات</h2><p class="muted">اختر الحاوية الأنسب للعنصر. اتبع دائمًا قواعد الفرز في منطقتك.</p><div class="progress"><span id="sort-progress"></span></div>
+  <div class="question" id="sort-item" style="text-align:center;font-size:1.6rem;padding:20px"></div><div class="answers" id="sort-a"></div><p class="feedback" id="sort-f" aria-live="polite"></p><div class="actions"><button class="primary hidden" id="sort-next">العنصر التالي ←</button><button class="secondary" id="sort-restart">إعادة اللعبة ↻</button></div>
+</section>
+<section class="panel game hidden" id="nature">
+  <h2>🌳 صديق الطبيعة</h2><p class="muted">مواقف يومية، وقرارات تصنع فرقًا.</p><div class="progress"><span id="nature-progress"></span></div>
+  <div class="question" id="nature-q"></div><div class="answers" id="nature-a"></div><p class="feedback" id="nature-f" aria-live="polite"></p><div class="actions"><button class="primary hidden" id="nature-next">الموقف التالي ←</button><button class="secondary" id="nature-restart">إعادة اللعبة ↻</button></div>
+</section>
+<section class="panel game hidden" id="save">
+  <h2>💧 أنقذ الموارد</h2><p class="muted">وفّر الماء والطاقة باختيارات ذكية.</p><div class="progress"><span id="save-progress"></span></div>
+  <div class="question" id="save-q"></div><div class="answers" id="save-a"></div><p class="feedback" id="save-f" aria-live="polite"></p><div class="actions"><button class="primary hidden" id="save-next">التحدي التالي ←</button><button class="secondary" id="save-restart">إعادة اللعبة ↻</button></div>
+</section>
+<section class="panel game hidden" id="tf">
+  <h2>⚡ صح أم خطأ؟</h2><p class="muted" id="tf-count"></p><div class="progress"><span id="tf-progress"></span></div>
+  <div class="question" id="tf-q"></div><div class="answers"><button class="answer" id="tf-true">✅ صح</button><button class="answer" id="tf-false">❌ خطأ</button></div><p class="feedback" id="tf-f" aria-live="polite"></p><div class="actions"><button class="primary hidden" id="tf-next">العبارة التالية ←</button><button class="secondary" id="tf-restart">إعادة اللعبة ↻</button></div>
+</section>
+</main>
+<aside class="side">
+  <section class="side-card"><h2>🌟 رصيدك</h2><div class="bigscore"><span id="side-score">0</span> نقطة</div><p class="muted">كل إجابة صحيحة = 10 نقاط</p></section>
+  <section class="side-card mission"><h2>🎯 مهمة اليوم</h2><p class="muted">اختار عادة وجرّب تطبّقها:</p>
+    <label><input type="checkbox"> أستخدم قارورة قابلة لإعادة الاستخدام</label>
+    <label><input type="checkbox"> أطفئ الأنوار غير الضرورية</label>
+    <label><input type="checkbox"> أقلل هدر الطعام والماء</label>
+    <label><input type="checkbox"> أفرز النفايات حسب النظام المحلي</label>
+  </section>
+  <section class="side-card"><h2>🌿 معلومة سريعة</h2><p id="eco-tip">تقليل النفايات يبدأ من الأشياء الصغيرة التي نستخدمها كل يوم.</p><button class="secondary" id="new-tip">معلومة ثانية ↻</button></section>
+</aside>
+</div>
+<footer>🌍 كوكبنا بيتنا — خلّي أثرَك أخضر. <br>موقع تعليمي تفاعلي للتوعية البيئية.</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+let score=0, completed=new Set();
+function addScore(n){score+=n;$("score").textContent=score;$("side-score").textContent=score;$("level").textContent=Math.floor(score/50)+1}
+function markCompleted(id){if(!completed.has(id)){completed.add(id);$("completed").textContent=completed.size}}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function setFeedback(id,msg,ok){const e=$(id);e.textContent=msg;e.className="feedback "+(ok===true?"good":ok===false?"bad":"")}
+function showGame(id){document.querySelectorAll(".game").forEach(e=>e.classList.toggle("hidden",e.id!==id));document.querySelectorAll(".tab").forEach(e=>e.classList.toggle("active",e.dataset.game===id))}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showGame(b.dataset.game)));
+const games={
+quiz:{data:[
+["ما أفضل طريقة لتقليل استخدام البلاستيك؟",["استخدام قارورة قابلة لإعادة الاستخدام","استخدام كيس جديد كل مرة","رمي البلاستيك في الشارع"],0,"إعادة الاستخدام تقلل النفايات."],
+["أيّ مما يلي مصدر للطاقة المتجددة؟",["الفحم","الشمس","الديزل"],1,"الشمس مصدر متجدد للطاقة."],
+["لماذا تساعد الأشجار البيئة؟",["تزيد التلوث","توفّر موائل وتمتص ثاني أكسيد الكربون","تستهلك كل الأكسجين"],1,"الأشجار تدعم الحياة والتنوع الحيوي."],
+["ما التصرف الأفضل عند تنظيف الأسنان؟",["ترك الماء جاريًا","فتح الصنبور بقوة","إغلاق الصنبور أثناء التنظيف"],2,"إغلاق الصنبور يساعد على توفير الماء."],
+["كيف نقلل هدر الطعام؟",["نخطط للوجبات ونشتري حاجتنا","نشتري أكثر مما نحتاج","نرمي البقايا دائمًا"],0,"التخطيط يحمي الموارد ويقلل النفايات."],
+["ماذا نفعل بالبطاريات المستعملة؟",["نرميها بالطبيعة","نسلّمها لنقطة جمع مخصصة","نحرقها"],1,"البطاريات تحتاج إلى جمع ومعالجة مناسبة."],
+["أيّ خيار يقلل تلوث الهواء في مشوار قريب وآمن؟",["المشي","تشغيل السيارة بلا حاجة","حرق النفايات"],0,"المشي يقلل انبعاثات الرحلات القصيرة."],
+["ما فائدة إعادة التدوير؟",["زيادة النفايات","إهدار المواد","استعادة مواد لاستخدامها من جديد"],2,"إعادة التدوير قد توفر مواد وطاقة."]
+],q:"quiz-q",a:"quiz-a",f:"quiz-f",next:"quiz-next",count:"quiz-count",progress:"quiz-progress",prefix:"quiz",tip:true},
+nature:{data:[
+["وجدت نفايات في الحديقة. ماذا تفعل؟",["أتركها","أجمعها بأمان وأضعها في المكان المناسب"],1,"التخلص السليم يحافظ على الطبيعة."],
+["غادرت غرفة لا يوجد فيها أحد.",["أطفئ الأنوار غير الضرورية","أتركها طوال اليوم"],0,"إطفاء الأنوار يوفر الطاقة."],
+["تريد الذهاب لمتجر قريب والطريق آمن.",["أستخدم السيارة دائمًا","أمشي إذا كان مناسبًا"],1,"المشي يقلل الانبعاثات."],
+["وجدت صنبورًا يتسرب منه الماء.",["أتجاهله","أبلغ المسؤول لإصلاحه"],1,"إصلاح التسرب يمنع الهدر."],
+["كيف تتعامل مع شجرة صغيرة؟",["أحميها ولا أكسر أغصانها","أكسر أغصانها"],0,"النباتات مهمة للكائنات الحية."]
+],q:"nature-q",a:"nature-a",f:"nature-f",next:"nature-next",progress:"nature-progress",prefix:"nature"},
+save:{data:[
+["كيف توفر الماء أثناء تنظيف الأسنان؟",["أغلق الصنبور","أترك الماء جاريًا"],0,"إغلاق الصنبور يقلل الهدر."],
+["كيف تقلل استهلاك الكهرباء؟",["أترك كل الأجهزة تعمل","أطفئ الأجهزة غير المستخدمة"],1,"إطفاء الأجهزة يوفر الطاقة."],
+["ما الأفضل عند تشغيل الغسالة؟",["غسل قطعة واحدة كل مرة","تشغيلها بحمولة مناسبة"],1,"الحمولة المناسبة قد توفر الماء والطاقة."],
+["في جو معتدل، ماذا يمكن أن تفعل؟",["أستفيد من التهوية الطبيعية عند ملاءمتها","أشغّل التكييف مع فتح النوافذ"],0,"التهوية المناسبة قد تقلل الحاجة للتكييف."],
+["كيف تتعامل مع بقايا الطعام الصالحة؟",["أرميها فورًا","أحفظها بأمان لاستخدامها لاحقًا"],1,"حفظ الطعام جيدًا قد يقلل الهدر."]
+],q:"save-q",a:"save-a",f:"save-f",next:"save-next",progress:"save-progress",prefix:"save"},
+sort:{data:[
+["📰 صحيفة قديمة","ورق",0,"الورق النظيف قد يُقبل في حاويات الورق."],
+["📦 صندوق كرتون نظيف","ورق",0,"تأكد أن الكرتون جاف ونظيف."],
+["🧴 عبوة بلاستيكية","بلاستيك",1,"تحقق من قواعد إعادة تدوير العبوات محليًا."],
+["🍎 قشرة تفاح","عضوي",2,"بقايا الطعام يمكن تحويلها لسماد حيث تتوفر الخدمة."],
+["🥬 بقايا خضار","عضوي",2,"النفايات العضوية قد تناسب التسميد."],
+["🔋 بطارية مستعملة","نفايات خاصة",3,"لا تضع البطاريات في حاوية التدوير العادية؛ استخدم نقطة جمع مخصصة."],
+["🥫 علبة معدنية","معادن",4,"المعادن تُجمع منفصلة في بعض أنظمة التدوير."],
+["🧻 منديل متسخ","نفايات عامة",5,"المناديل المتسخة غالبًا لا تُقبل مع الورق القابل للتدوير."]
+],bins:["📄 الورق","🧴 البلاستيك","🍎 العضوي","🔋 نفايات خاصة","🥫 المعادن","🗑️ نفايات عامة"],q:"sort-item",a:"sort-a",f:"sort-f",next:"sort-next",progress:"sort-progress",prefix:"sort"},
+tf:{data:[
+["إعادة الاستخدام قد تقلل كمية النفايات.",true,"إعادة الاستخدام تقلل الحاجة لمنتجات جديدة."],
+["ترك الصنبور مفتوحًا أثناء تنظيف الأسنان يوفر الماء.",false,"إغلاق الصنبور يقلل الهدر."],
+["الطاقة الشمسية مصدر متجدد.",true,"الشمس مصدر للطاقة المتجددة."],
+["حرق النفايات في الهواء الطلق آمن دائمًا.",false,"قد يطلق الحرق ملوثات ضارة."],
+["فرز النفايات قد يساعد على إعادة تدوير المواد.",true,"الفرز المناسب يسهل المعالجة."],
+["كل أنواع البلاستيك تُقبل في كل برامج إعادة التدوير.",false,"القواعد تختلف حسب المنطقة والمنشأة."],
+["تقليل هدر الطعام مفيد للبيئة.",true,"التخطيط للوجبات يقلل النفايات."],
+["من الأفضل رمي البطاريات في الطبيعة.",false,"سلّم البطاريات إلى نقطة جمع مخصصة."]
+],q:"tf-q",f:"tf-f",next:"tf-next",count:"tf-count",progress:"tf-progress",prefix:"tf"}
+};
+const state={};
+function start(id){const g=games[id];state[id]={i:0,order:shuffle(g.data),answered:false};render(id)}
+function render(id){
+ const g=games[id],s=state[id],i=s.i;
+ $(g.next).classList.add("hidden");
+ $(g.f).textContent="";$(g.f).className="feedback";
+ $(g.progress).style.width=(i/g.data.length*100)+"%";
+ if(g.count)$(g.count).textContent=i>=g.data.length?"اكتملت اللعبة!":`السؤال ${i+1} من ${g.data.length}`;
+ if(i>=g.data.length){
+   $(g.q).textContent="🎉 أحسنت! أنهيت اللعبة.";$(g.progress).style.width="100%";
+   if(g.a)$(g.a).innerHTML="";if(id==="tf"){$("tf-true").disabled=true;$("tf-false").disabled=true}
+   $(g.next).textContent="العب من جديد ↻";$(g.next).classList.remove("hidden");markCompleted(id);return;
+ }
+ s.answered=false;
+ if(id==="sort"){
+   $(g.q).textContent=s.order[i][0];$(g.a).innerHTML="";
+   g.bins.forEach((label,n)=>{const b=document.createElement("button");b.className="bin";b.textContent=label;b.onclick=()=>answer(id,n);$(g.a).appendChild(b)});
+ }else if(id==="tf"){
+   $(g.q).textContent=s.order[i][0];$("tf-true").disabled=false;$("tf-false").disabled=false;
+ }else{
+   const item=s.order[i];$(g.q).textContent=item[0];$(g.a).innerHTML="";
+   item[1].forEach((label,n)=>{const b=document.createElement("button");b.className="answer";b.textContent=label;b.onclick=()=>answer(id,n);$(g.a).appendChild(b)});
+ }
+}
+function answer(id,value){
+ const g=games[id],s=state[id];if(s.answered||s.i>=g.data.length)return;s.answered=true;
+ const item=s.order[s.i],correct=id==="tf"?value===item[1]:value===item[2];
+ if(id==="tf"){$("tf-true").disabled=true;$("tf-false").disabled=true}
+ else $(g.a).querySelectorAll("button").forEach((b,n)=>{b.disabled=true;if(n===(id==="sort"?item[2]:item[2]))b.classList.add("good");if(n===value&&!correct)b.classList.add("bad")});
+ if(correct){addScore(10);setFeedback(g.f,"✅ إجابة صحيحة! +10 نقاط. "+item[item.length-1],true)}
+ else setFeedback(g.f,"❌ مو تمام. "+item[item.length-1],false);
+ if(id==="sort"&&!correct){setFeedback(g.f,"❌ جرّب مرة ثانية بالجولة القادمة. "+item[3],false)}
+ $(g.progress).style.width=((s.i+1)/g.data.length*100)+"%";
+ $(g.next).textContent=s.i===g.data.length-1?"عرض النتيجة ←":({quiz:"السؤال التالي ←",sort:"العنصر التالي ←",nature:"الموقف التالي ←",save:"التحدي التالي ←",tf:"العبارة التالية ←"}[id]);
+ $(g.next).classList.remove("hidden");
+}
+for(const id of Object.keys(games)){
+ const g=games[id];start(id);
+ $(g.next).addEventListener("click",()=>{const s=state[id];if(s.i>=g.data.length){start(id)}else{s.i++;render(id)}});
+ const restart=$(id+"-restart");if(restart)restart.addEventListener("click",()=>start(id));
+}
+$("tf-true").onclick=()=>answer("tf",true);$("tf-false").onclick=()=>answer("tf",false);
+const tips=["تقليل النفايات يبدأ من الأشياء الصغيرة التي نستخدمها كل يوم.","إصلاح التسربات طريقة عملية لتوفير الماء.","إعادة الاستخدام قبل إعادة التدوير خيار جيد غالبًا.","خطط لوجباتك لتقلل هدر الطعام.","افصل البطاريات وسلّمها إلى نقطة جمع مناسبة.","استخدم حقيبة قابلة لإعادة الاستخدام عند التسوق."];
+$("new-tip").onclick=()=>{$("eco-tip").textContent=tips[Math.floor(Math.random()*tips.length)]};
+</script>
+</body>
+</html>
